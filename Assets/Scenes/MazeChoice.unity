@@ -255,6 +255,6 @@ PrefabInstance:
     - target: {fileID: 7110755816412484607, guid: baf6aa28da2dc85429b3a5ffc330684f, type: 3}
       propertyPath: MazeChoiceUI
       value: 
-      objectReference: {fileID: 5006743569264352779, guid: 30c8501156da63648b032f6804592630, type: 3}
+      objectReference: {fileID: 1261240645162957468, guid: 30c8501156da63648b032f6804592630, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: baf6aa28da2dc85429b3a5ffc330684f, type: 3}
