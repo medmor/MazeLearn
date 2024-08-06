@@ -28,6 +28,8 @@ public class MazeLogic : MonoBehaviour
 
     public Material FloorMaterial;
 
+    private Color collectColor = new Color(0, 1, 0, .8f);
+
     private Transform StartPos;
     private Transform GoalPos;
 
@@ -175,7 +177,7 @@ public class MazeLogic : MonoBehaviour
         {
             SoundManager.Instance.PlayEffects("Collect2");
             CheckFoundNames();
-            UIChars[index].GetComponent<Image>().color = new Color(0, 1, 0, .5f);
+            UIChars[index].GetComponent<Image>().color = collectColor;
         }
         else
         {

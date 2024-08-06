@@ -276,12 +276,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4489409081817196191, guid: 213d5229bbbdad843a338769094c240e, type: 3}
+      propertyPath: m_Spacing.x
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4489409081817196191, guid: 213d5229bbbdad843a338769094c240e, type: 3}
+      propertyPath: m_Spacing.y
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4489409081817196191, guid: 213d5229bbbdad843a338769094c240e, type: 3}
       propertyPath: m_CellSize.x
-      value: 40
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 4489409081817196191, guid: 213d5229bbbdad843a338769094c240e, type: 3}
       propertyPath: m_CellSize.y
-      value: 40
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 4489409081817196193, guid: 213d5229bbbdad843a338769094c240e, type: 3}
       propertyPath: m_Name
@@ -413,12 +421,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4489409081817196191, guid: 213d5229bbbdad843a338769094c240e, type: 3}
+      propertyPath: m_Spacing.x
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4489409081817196191, guid: 213d5229bbbdad843a338769094c240e, type: 3}
+      propertyPath: m_Spacing.y
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4489409081817196191, guid: 213d5229bbbdad843a338769094c240e, type: 3}
       propertyPath: m_CellSize.x
-      value: 40
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 4489409081817196191, guid: 213d5229bbbdad843a338769094c240e, type: 3}
       propertyPath: m_CellSize.y
-      value: 40
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 4489409081817196193, guid: 213d5229bbbdad843a338769094c240e, type: 3}
       propertyPath: m_Name
@@ -550,12 +566,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4489409081817196191, guid: 213d5229bbbdad843a338769094c240e, type: 3}
+      propertyPath: m_Spacing.x
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4489409081817196191, guid: 213d5229bbbdad843a338769094c240e, type: 3}
+      propertyPath: m_Spacing.y
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4489409081817196191, guid: 213d5229bbbdad843a338769094c240e, type: 3}
       propertyPath: m_CellSize.x
-      value: 40
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 4489409081817196191, guid: 213d5229bbbdad843a338769094c240e, type: 3}
       propertyPath: m_CellSize.y
-      value: 40
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 4489409081817196193, guid: 213d5229bbbdad843a338769094c240e, type: 3}
       propertyPath: m_Name
