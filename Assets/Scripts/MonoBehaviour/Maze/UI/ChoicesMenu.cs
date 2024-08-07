@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class MazeChoiceClick : MonoBehaviour
+public class ChoicesMenu : MonoBehaviour
 {
-    private readonly int MazeNumber = 12;
+    public Transform grid;
     public GameObject ButtonPref;
     public GameObject starPref;
 
@@ -14,11 +14,11 @@ public class MazeChoiceClick : MonoBehaviour
 
     public void InstantiateButtons()
     {
-        for (var i = 0; i < MazeNumber; i++)
+        for (var i = 0; i < GameManager.Instance.MazeNumber; i++)
         {
             var numb = i + 1;
             var button = Instantiate(ButtonPref);
-            button.transform.SetParent(transform);
+            button.transform.SetParent(grid);
             button.GetComponent<Button>().onClick.AddListener(() => { GoToMaze(numb.ToString()); });
 
             button.GetComponentInChildren<Text>().text = numb.ToString();

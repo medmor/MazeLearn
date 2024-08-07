@@ -4,16 +4,18 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : Manager<GameManager>
 {
+    public readonly int MazeNumber = 12;
+
     public GameObject[] SystemPrefabs;
     public string CurrentMaze { get; set; } = "Maze6";
     public bool HommeIntro = false;
-    public GameObject MazeChoiceUI;
+    // public GameObject MazeChoiceUI;
 
 
     void Start()
     {
         InstantiateSystemPrefabs();
-        Instantiate(MazeChoiceUI);
+        // Instantiate(MazeChoiceUI);
     }
     void InstantiateSystemPrefabs()
     {
@@ -39,7 +41,7 @@ public class GameManager : Manager<GameManager>
         else
         {
             SoundManager.Instance.StopMusicAudioSource();
-            Instantiate(MazeChoiceUI);
+            // Instantiate(MazeChoiceUI);
         }
     }
 
