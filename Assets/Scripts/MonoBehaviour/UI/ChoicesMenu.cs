@@ -19,7 +19,12 @@ public class ChoicesMenu : MonoBehaviour
             var numb = i + 1;
             var button = Instantiate(ButtonPref);
             button.transform.SetParent(grid);
-            button.GetComponent<Button>().onClick.AddListener(() => { GoToMaze(numb.ToString()); });
+            button.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                GoToMaze(numb.ToString());
+                UIManager.Instance.choicesMenu.SetActive(false);
+                UIManager.Instance.mazeUI.SetActive(true);
+            });
 
             button.GetComponentInChildren<Text>().text = numb.ToString();
 

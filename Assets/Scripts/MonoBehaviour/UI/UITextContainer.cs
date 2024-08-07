@@ -10,7 +10,7 @@ public class UITextContainer : MonoBehaviour
 
     public void Start()
     {
-
+        print("start");
         if (Direction == "RTL")
             Grid.startCorner = GridLayoutGroup.Corner.UpperRight;
         else

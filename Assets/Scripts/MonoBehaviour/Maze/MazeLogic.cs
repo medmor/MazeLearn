@@ -157,9 +157,9 @@ public class MazeLogic : MonoBehaviour
                 txt.GetComponent<MazeText>().SetTexts(wrongChars[i].ToString());
             }
         }
-        ArUITextContainer.SpawnUIChars(Item.ArName, UIChars);
-        FrUITextContainer.SpawnUIChars(Item.FrName, UIChars);
-        EnUITextContainer.SpawnUIChars(Item.EnName, UIChars);
+        UIManager.Instance.ArUITextContainer.SpawnUIChars(Item.ArName, UIChars);
+        UIManager.Instance.FrUITextContainer.SpawnUIChars(Item.FrName, UIChars);
+        UIManager.Instance.EnUITextContainer.SpawnUIChars(Item.EnName, UIChars);
     }
     void SetUpScene()
     {
