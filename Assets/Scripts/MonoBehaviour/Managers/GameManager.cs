@@ -5,18 +5,18 @@ using UnityEngine.SceneManagement;
 public class GameManager : Manager<GameManager>
 {
     public readonly int MazeNumber = 12;
-
     public GameObject[] SystemPrefabs;
     public string CurrentMaze { get; set; } = "Maze6";
     public bool HommeIntro = false;
-    // public GameObject MazeChoiceUI;
 
 
     void Start()
     {
         InstantiateSystemPrefabs();
-        // Instantiate(MazeChoiceUI);
+        EventsManager.Instance.TimeDone.AddListener(GameOver);
+        EventsManager.Instance.MazeChoosen.AddListener(OnMazeChoosen);
     }
+
     void InstantiateSystemPrefabs()
     {
         for (int i = 0; i < SystemPrefabs.Length; ++i)
@@ -26,24 +26,42 @@ public class GameManager : Manager<GameManager>
         SoundManager.Instance.PlayEffects("Intro");
     }
 
-    public void SwitchScene(string name)
-    {
-        SceneManager.LoadSceneAsync(name, LoadSceneMode.Single)
-            .completed += OnSceneLoadCompleted;
 
+
+    public void Pause()
+    {
+        Time.timeScale = 0;
     }
 
-    void OnSceneLoadCompleted(AsyncOperation ao)
+    public void Resume()
     {
-        var name = SceneManager.GetActiveScene().name;
-        if (name == "Maze")
-            SoundManager.Instance.PlayMusic(SoundManager.Instance.Musics[Random.Range(0, SoundManager.Instance.Musics.Count)].name);
-        else
-        {
-            SoundManager.Instance.StopMusicAudioSource();
-            // Instantiate(MazeChoiceUI);
-        }
+        Time.timeScale = 1;
     }
 
-
+    public void GameOver()
+    {
+        SoundManager.Instance.PlayEffects("Lose");
+        SceneManager.LoadScene("Boot");
+        UIManager.Instance.mazeUI.SetActive(false);
+        UIManager.Instance.introUI.SetActive(true);
+        SoundManager.Instance.StopMusicAudioSource();
+    }
+    public void Win()
+    {
+        SceneManager.LoadScene("Boot");
+        UIManager.Instance.mazeUI.SetActive(false);
+        UIManager.Instance.introUI.SetActive(true);
+        UIManager.Instance.StarsContainer.gameObject.SetActive(false);
+        SoundManager.Instance.StopMusicAudioSource();
+    }
+    void OnMazeChoosen(string name)
+    {
+        print(name);
+        UIManager.Instance.choicesMenu.SetActive(false);
+        UIManager.Instance.mazeUI.SetActive(true);
+        CurrentMaze = name;
+        SceneManager.LoadScene("Maze");
+        Resume();
+        SoundManager.Instance.PlayMusic(SoundManager.Instance.Musics[Random.Range(0, SoundManager.Instance.Musics.Count)].name);
+    }
 }

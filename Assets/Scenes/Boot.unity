@@ -267,8 +267,20 @@ PrefabInstance:
       objectReference: {fileID: 1261240645162957468, guid: 30c8501156da63648b032f6804592630, type: 3}
     - target: {fileID: 7110755816412484607, guid: baf6aa28da2dc85429b3a5ffc330684f, type: 3}
       propertyPath: SystemPrefabs.Array.size
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 7110755816412484607, guid: baf6aa28da2dc85429b3a5ffc330684f, type: 3}
+      propertyPath: SystemPrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 5367008188313753625, guid: 3c0c11d7ff39fa249a8fbeb376f1f742, type: 3}
+    - target: {fileID: 7110755816412484607, guid: baf6aa28da2dc85429b3a5ffc330684f, type: 3}
+      propertyPath: SystemPrefabs.Array.data[2]
+      value: 
+      objectReference: {fileID: 379846971526834109, guid: 10b3016400ac6c543a9c7a45b1edea93, type: 3}
+    - target: {fileID: 7110755816412484607, guid: baf6aa28da2dc85429b3a5ffc330684f, type: 3}
+      propertyPath: SystemPrefabs.Array.data[3]
+      value: 
+      objectReference: {fileID: 5280926085097974517, guid: af19377a10db5eb4cb5caafc5b2122c6, type: 3}
     - target: {fileID: 7110755816412484607, guid: baf6aa28da2dc85429b3a5ffc330684f, type: 3}
       propertyPath: SystemPrefabs.Array.data[4]
       value: 

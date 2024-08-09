@@ -4,24 +4,18 @@ using UnityEngine;
 using UnityEngine.UI;
 public class UITextContainer : MonoBehaviour
 {
-    public string Direction;
-    public GridLayoutGroup Grid;
     public GameObject TextSlotPref;
 
-    public void Start()
-    {
-        print("start");
-        if (Direction == "RTL")
-            Grid.startCorner = GridLayoutGroup.Corner.UpperRight;
-        else
-            Grid.startCorner = GridLayoutGroup.Corner.UpperLeft;
-    }
     public void SpawnUIChars(string name, List<GameObject> uIChars)
     {
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
         for (var i = 0; i < name.Length; i++)
         {
             var txt = Instantiate(TextSlotPref);
-            txt.transform.SetParent(Grid.transform);
+            txt.transform.SetParent(transform);
             txt.GetComponentInChildren<TextMeshProUGUI>().text = name[i].ToString();
             uIChars.Add(txt);
         }

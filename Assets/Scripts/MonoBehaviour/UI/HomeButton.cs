@@ -9,9 +9,11 @@ public class HomeButton : MonoBehaviour
 
         GetComponent<Button>().onClick.AddListener(() =>
         {
+            GameManager.Instance.Pause();
             SoundManager.Instance.PlayEffects("Click");
             UIManager.Instance.choicesMenu.SetActive(true);
             UIManager.Instance.mazeUI.SetActive(false);
+            SoundManager.Instance.StopMusicAudioSource();
         });
     }
 

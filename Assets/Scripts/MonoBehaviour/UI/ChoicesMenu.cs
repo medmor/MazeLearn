@@ -21,9 +21,12 @@ public class ChoicesMenu : MonoBehaviour
             button.transform.SetParent(grid);
             button.GetComponent<Button>().onClick.AddListener(() =>
             {
-                GoToMaze(numb.ToString());
-                UIManager.Instance.choicesMenu.SetActive(false);
-                UIManager.Instance.mazeUI.SetActive(true);
+                if (ProgressManager.Instance.LockedMaze(numb))
+                {
+                    return;
+                }
+                SoundManager.Instance.PlayEffects("Click");
+                EventsManager.Instance.MazeChoosen.Invoke("Maze" + numb.ToString());
             });
 
             button.GetComponentInChildren<Text>().text = numb.ToString();
@@ -48,10 +51,6 @@ public class ChoicesMenu : MonoBehaviour
     }
     public void GoToMaze(string mazeNumber)
     {
-        if (ProgressManager.Instance.LockedMaze(int.Parse(mazeNumber)))
-            return;
-        SoundManager.Instance.PlayEffects("Click");
-        GameManager.Instance.CurrentMaze = "Maze" + mazeNumber;
-        GameManager.Instance.SwitchScene("Maze");
+
     }
 }

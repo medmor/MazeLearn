@@ -10,12 +10,8 @@ public class MazeTimer : MonoBehaviour
     void Start()
     {
         StartCoroutine(Timer());
+    }
 
-    }
-    public bool IsTimeDone()
-    {
-        return neededTime <= 0;
-    }
     IEnumerator Timer()
     {
         while (neededTime >= 0)
@@ -27,13 +23,18 @@ public class MazeTimer : MonoBehaviour
                             t.Seconds);
             neededTime -= 1f;
             TimerText.text = answer;
-            if (neededTime < 20 && !isRed)
+            if (neededTime < 20)
             {
-                isRed = true;
-                TimerText.color = Color.red;
+                SoundManager.Instance.PlayEffects("Beep");
+                if (!isRed)
+                {
+                    isRed = true;
+                    TimerText.color = Color.red;
+                }
             }
             yield return new WaitForSeconds(1f);
         }
+        EventsManager.Instance.TimeDone.Invoke();
     }
 
 }

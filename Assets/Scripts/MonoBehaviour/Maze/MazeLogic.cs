@@ -11,25 +11,13 @@ public class MazeLogic : MonoBehaviour
     public ItemsToLearnLists Items;
     [HideInInspector]
     public ItemToLearn Item;
-
     public NavMeshAgent agent;
-
     public GameObject textPerph;
     public GameObject wrongTextPerph;
-
     public GameObject ArTextSlotPref;
     public GameObject EnTextSlotPref;
-    public UITextContainer ArUITextContainer;
-    public UITextContainer FrUITextContainer;
-    public UITextContainer EnUITextContainer;
-    public GameObject Hearts;
-
-    public StarsContainer StarsContainer;
-
     public Material FloorMaterial;
-
     private Color collectColor = new Color(0, 1, 0, .8f);
-
     private Transform StartPos;
     private Transform GoalPos;
 
@@ -60,7 +48,6 @@ public class MazeLogic : MonoBehaviour
 
         EventsManager.Instance.PlayerCollideWithChar.AddListener(OnPlayerCollideWhitheChar);
     }
-
 
     void ChooseItemToLearn()
     {
@@ -143,7 +130,7 @@ public class MazeLogic : MonoBehaviour
             remainingDistToCorner -= dist;
         }
     }
-    void SpawnSharsInScene()
+    void SpawnSharsInSceneAndUI()
     {
         for (var i = 0; i < chars.Count; i++)
         {
@@ -168,7 +155,7 @@ public class MazeLogic : MonoBehaviour
         totalDistance = GetPathRemainingDistance();
         CalculateNeededTime();
         SetCharsPositions();
-        SpawnSharsInScene();
+        SpawnSharsInSceneAndUI();
     }
     void OnPlayerCollideWhitheChar(GameObject obj)
     {
@@ -230,18 +217,14 @@ public class MazeLogic : MonoBehaviour
 
         agent.gameObject.GetComponent<Animator>().SetTrigger("Jump");
 
+        var starsNumber = UIManager.Instance.Hearts.transform.childCount;
 
-        var starsNumber = 3;
-        if (GameObject.Find("/MazeUI/Timer").GetComponent<MazeTimer>().IsTimeDone())
-            starsNumber--;
-        if (Hearts.transform.childCount < 3)
-            starsNumber--;
-        StarsContainer.SpawnStars(starsNumber);
-        StarsContainer.Tween();
+        UIManager.Instance.StarsContainer.SpawnStars(starsNumber);
+        UIManager.Instance.StarsContainer.Tween();
         int currentMaze = int.Parse(GameManager.Instance.CurrentMaze.Substring(4));
         ProgressManager.Instance.AddCompletedMaze(currentMaze + ":" + starsNumber);
-        ProgressManager.Instance.AddCompletedMaze((currentMaze + 1) + ":" + 0);
-        StartCoroutine(Wait(3, () => { GameManager.Instance.SwitchScene("MazeChoice"); }));
+        ProgressManager.Instance.AddCompletedMaze(currentMaze + 1 + ":" + 0);
+        StartCoroutine(Wait(3, () => { GameManager.Instance.Win(); }));
     }
     int GetFoundCharIndex(char c)
     {
@@ -262,24 +245,25 @@ public class MazeLogic : MonoBehaviour
     void DecrementHeart()
     {
         SoundManager.Instance.PlayEffects("BadCollect");
-        var heartsNumber = Hearts.transform.childCount - 1;
-        Destroy(Hearts.transform.GetChild(heartsNumber).gameObject);
+        var hearts = UIManager.Instance.Hearts;
+        var heartsNumber = hearts.childCount - 1;
+        Destroy(hearts.GetChild(heartsNumber).gameObject);
         if (heartsNumber == 0)
-            GameManager.Instance.SwitchScene("gameover");
+        {
+            GameManager.Instance.GameOver();
+        }
 
     }
     float CalculateNeededTime()
     {
         return totalDistance * agent.speed * 10;
     }
-
     IEnumerator Wait(float seconds, LambdaArgument lambda)
     {
         yield return new WaitForSeconds(seconds);
         lambda();
     }
     delegate void LambdaArgument();
-
     string AreAllCharsOfNameFound(string name)
     {
         for (var i = 0; i < foundChars.Count; i++)
