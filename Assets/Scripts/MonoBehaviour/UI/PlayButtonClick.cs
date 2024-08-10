@@ -10,8 +10,7 @@ public class PlayButtonClick : MonoBehaviour
     {
         GetComponent<Button>().onClick.AddListener(() =>
         {
-            UIManager.Instance.introUI.SetActive(false);
-            UIManager.Instance.choicesMenu.SetActive(true);
+            UIManager.Instance.ToogleChoicesMenu();
         });
     }
 }

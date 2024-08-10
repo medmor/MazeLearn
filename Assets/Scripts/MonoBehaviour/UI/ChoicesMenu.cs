@@ -17,11 +17,12 @@ public class ChoicesMenu : MonoBehaviour
         for (var i = 0; i < GameManager.Instance.MazeNumber; i++)
         {
             var numb = i + 1;
+            var locked = ProgressManager.Instance.LockedMaze(numb);
             var button = Instantiate(ButtonPref);
             button.transform.SetParent(grid);
             button.GetComponent<Button>().onClick.AddListener(() =>
             {
-                if (ProgressManager.Instance.LockedMaze(numb))
+                if (locked)
                 {
                     return;
                 }
@@ -30,8 +31,6 @@ public class ChoicesMenu : MonoBehaviour
             });
 
             button.GetComponentInChildren<Text>().text = numb.ToString();
-
-            var locked = ProgressManager.Instance.LockedMaze(numb);
 
             button.transform.GetChild(1).GetComponent<Image>().enabled = locked;
 

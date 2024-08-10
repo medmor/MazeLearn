@@ -11,8 +11,7 @@ public class HomeButton : MonoBehaviour
         {
             GameManager.Instance.Pause();
             SoundManager.Instance.PlayEffects("Click");
-            UIManager.Instance.choicesMenu.SetActive(true);
-            UIManager.Instance.mazeUI.SetActive(false);
+            UIManager.Instance.ToogleBootUI();
             SoundManager.Instance.StopMusicAudioSource();
         });
     }

@@ -144,9 +144,8 @@ public class MazeLogic : MonoBehaviour
                 txt.GetComponent<MazeText>().SetTexts(wrongChars[i].ToString());
             }
         }
-        UIManager.Instance.ArUITextContainer.SpawnUIChars(Item.ArName, UIChars);
-        UIManager.Instance.FrUITextContainer.SpawnUIChars(Item.FrName, UIChars);
-        UIManager.Instance.EnUITextContainer.SpawnUIChars(Item.EnName, UIChars);
+
+        UIManager.Instance.SpawnUITexts(Item.ArName, Item.FrName, Item.EnName, UIChars);
     }
     void SetUpScene()
     {
@@ -217,10 +216,9 @@ public class MazeLogic : MonoBehaviour
 
         agent.gameObject.GetComponent<Animator>().SetTrigger("Jump");
 
-        var starsNumber = UIManager.Instance.Hearts.transform.childCount;
+        var starsNumber = UIManager.Instance.GetHeartsNumber;
+        UIManager.Instance.SetupStars();
 
-        UIManager.Instance.StarsContainer.SpawnStars(starsNumber);
-        UIManager.Instance.StarsContainer.Tween();
         int currentMaze = int.Parse(GameManager.Instance.CurrentMaze.Substring(4));
         ProgressManager.Instance.AddCompletedMaze(currentMaze + ":" + starsNumber);
         ProgressManager.Instance.AddCompletedMaze(currentMaze + 1 + ":" + 0);
@@ -245,14 +243,10 @@ public class MazeLogic : MonoBehaviour
     void DecrementHeart()
     {
         SoundManager.Instance.PlayEffects("BadCollect");
-        var hearts = UIManager.Instance.Hearts;
-        var heartsNumber = hearts.childCount - 1;
-        Destroy(hearts.GetChild(heartsNumber).gameObject);
-        if (heartsNumber == 0)
+        if (UIManager.Instance.DecrementHeart())
         {
             GameManager.Instance.GameOver();
         }
-
     }
     float CalculateNeededTime()
     {

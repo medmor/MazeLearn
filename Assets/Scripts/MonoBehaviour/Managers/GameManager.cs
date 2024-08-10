@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-//using System;
 
 public class GameManager : Manager<GameManager>
 {
@@ -41,27 +40,25 @@ public class GameManager : Manager<GameManager>
     public void GameOver()
     {
         SoundManager.Instance.PlayEffects("Lose");
-        SceneManager.LoadScene("Boot");
-        UIManager.Instance.mazeUI.SetActive(false);
-        UIManager.Instance.introUI.SetActive(true);
-        SoundManager.Instance.StopMusicAudioSource();
+        ResetBoot();
+
     }
     public void Win()
     {
         SceneManager.LoadScene("Boot");
-        UIManager.Instance.mazeUI.SetActive(false);
-        UIManager.Instance.introUI.SetActive(true);
-        UIManager.Instance.StarsContainer.gameObject.SetActive(false);
-        SoundManager.Instance.StopMusicAudioSource();
+        ResetBoot();
     }
     void OnMazeChoosen(string name)
     {
-        print(name);
-        UIManager.Instance.choicesMenu.SetActive(false);
-        UIManager.Instance.mazeUI.SetActive(true);
+        UIManager.Instance.ToogleMazeUI();
         CurrentMaze = name;
         SceneManager.LoadScene("Maze");
         Resume();
         SoundManager.Instance.PlayMusic(SoundManager.Instance.Musics[Random.Range(0, SoundManager.Instance.Musics.Count)].name);
+    }
+    void ResetBoot()
+    {
+        UIManager.Instance.ToogleBootUI();
+        SoundManager.Instance.StopMusicAudioSource();
     }
 }
