@@ -1,5 +1,4 @@
 ﻿using Cinemachine;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -36,20 +35,21 @@ public class MazeLogic : MonoBehaviour
 
     public void Start()
     {
-        Instantiate(Resources.Load<GameObject>("Maze/Levels/" + GameManager.Instance.CurrentMaze));
-        GoalPos = GameObject.Find(GameManager.Instance.CurrentMaze + "(Clone)/Goal").transform;
-        StartPos = GameObject.Find(GameManager.Instance.CurrentMaze + "(Clone)/Start").transform;
+        var mazeName = "Maze" + (GameManager.Instance.CurrentMaze + 1);
+        Instantiate(Resources.Load<GameObject>("Maze/Levels/" + mazeName));
+        GoalPos = GameObject.Find(mazeName + "(Clone)/Goal").transform;
+        StartPos = GameObject.Find(mazeName + "(Clone)/Start").transform;
         agent.transform.position = StartPos.position;
         agent.transform.position = StartPos.position;
 
-        ChooseItemToLearn();
+        ChooseItemToLearn(mazeName);
 
         SetUpScene();
 
         EventsManager.Instance.PlayerCollideWithChar.AddListener(OnPlayerCollideWhitheChar);
     }
 
-    void ChooseItemToLearn()
+    void ChooseItemToLearn(string mazeName)
     {
         var usedItems = ProgressManager.Instance.GetIMazeItemsToLearn();
 
@@ -57,7 +57,7 @@ public class MazeLogic : MonoBehaviour
             Item = Items.RandomCombinedList[new System.Random().Next(usedItems.Count)];
         else
             Item = Items.RandomCombinedList[usedItems.Count];
-        var material = GameObject.Find(GameManager.Instance.CurrentMaze + "(Clone)/Map/Floor").GetComponent<Renderer>().material;// FloorMeshMap.material;
+        var material = GameObject.Find(mazeName + "(Clone)/Map/Floor").GetComponent<Renderer>().material;// FloorMeshMap.material;
         material.SetTexture("_MainTex", Resources.Load<Texture2D>("Maze/Floors/" + Item.EnName));
     }
     float GetPathRemainingDistance()
@@ -184,10 +184,10 @@ public class MazeLogic : MonoBehaviour
                     var sound = Resources.Load<AudioClip>("Audios/" + Item.Type + "/" + Item.EnName +
                         (i == 0 ? "/Ar" : i == 1 ? "/Fr" : "/En")
                         + Item.EnName);
-                    StartCoroutine(Wait(SoundManager.Instance.SoundLength("Tada"), () =>
+                    StartCoroutine(ProgressManager.Instance.Wait(SoundManager.Instance.SoundLength("Tada"), () =>
                     {
                         SoundManager.Instance.PlayNames(sound);
-                        StartCoroutine(Wait(sound.length + .5f,
+                        StartCoroutine(ProgressManager.Instance.Wait(sound.length + .5f,
                             () =>
                             {
 
@@ -199,7 +199,11 @@ public class MazeLogic : MonoBehaviour
                                     GameObject.Find("/CamLight/Vcam").GetComponent<CinemachineVirtualCamera>().LookAt = null;
                                     GameObject.Find("/CamLight/Vcam").GetComponent<CinemachineVirtualCamera>().Follow = null;
                                     agent.transform.LookAt(GameObject.Find("/CamLight/Vcam").transform);
-                                    StartCoroutine(Wait(sound.length + 1f, () => MazeCompleted()));
+                                    StartCoroutine(ProgressManager.Instance.Wait(sound.length + 1f, () =>
+                                    {
+                                        EventsManager.Instance.MazeCompleted.Invoke(Item.EnName);
+                                        agent.gameObject.GetComponent<Animator>().SetTrigger("Jump");
+                                    }));
                                 }
                             }
                             ));
@@ -209,21 +213,7 @@ public class MazeLogic : MonoBehaviour
         }
 
     }
-    void MazeCompleted()
-    {
-        SoundManager.Instance.PlayEffects("Win");
-        ProgressManager.Instance.AddMazeItemToLearn(Item.EnName);
 
-        agent.gameObject.GetComponent<Animator>().SetTrigger("Jump");
-
-        var starsNumber = UIManager.Instance.GetHeartsNumber;
-        UIManager.Instance.SetupStars();
-
-        int currentMaze = int.Parse(GameManager.Instance.CurrentMaze.Substring(4));
-        ProgressManager.Instance.AddCompletedMaze(currentMaze + ":" + starsNumber);
-        ProgressManager.Instance.AddCompletedMaze(currentMaze + 1 + ":" + 0);
-        StartCoroutine(Wait(3, () => { GameManager.Instance.Win(); }));
-    }
     int GetFoundCharIndex(char c)
     {
         if (chars.Contains(c))
@@ -252,12 +242,7 @@ public class MazeLogic : MonoBehaviour
     {
         return totalDistance * agent.speed * 10;
     }
-    IEnumerator Wait(float seconds, LambdaArgument lambda)
-    {
-        yield return new WaitForSeconds(seconds);
-        lambda();
-    }
-    delegate void LambdaArgument();
+
     string AreAllCharsOfNameFound(string name)
     {
         for (var i = 0; i < foundChars.Count; i++)

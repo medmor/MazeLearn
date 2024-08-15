@@ -16,7 +16,7 @@ public class ChoicesMenu : MonoBehaviour
     {
         for (var i = 0; i < GameManager.Instance.MazeNumber; i++)
         {
-            var numb = i + 1;
+            var numb = i;
             var locked = ProgressManager.Instance.LockedMaze(numb);
             var button = Instantiate(ButtonPref);
             button.transform.SetParent(grid);
@@ -27,10 +27,10 @@ public class ChoicesMenu : MonoBehaviour
                     return;
                 }
                 SoundManager.Instance.PlayEffects("Click");
-                EventsManager.Instance.MazeChoosen.Invoke("Maze" + numb.ToString());
+                EventsManager.Instance.MazeChoosen.Invoke(numb);
             });
 
-            button.GetComponentInChildren<Text>().text = numb.ToString();
+            button.GetComponentInChildren<Text>().text = (numb + 1).ToString();
 
             button.transform.GetChild(1).GetComponent<Image>().enabled = locked;
 
@@ -38,7 +38,7 @@ public class ChoicesMenu : MonoBehaviour
             stars.gameObject.SetActive(!locked);
             if (!locked)
             {
-                var starsNumber = ProgressManager.Instance.GetMazeStars(numb.ToString());
+                var starsNumber = ProgressManager.Instance.GetMazeStars(numb);
                 for (var j = 0; j < starsNumber; j++)
                 {
                     var star = Instantiate(starPref);

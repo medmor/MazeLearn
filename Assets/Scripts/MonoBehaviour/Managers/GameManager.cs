@@ -5,7 +5,7 @@ public class GameManager : Manager<GameManager>
 {
     public readonly int MazeNumber = 12;
     public GameObject[] SystemPrefabs;
-    public string CurrentMaze { get; set; } = "Maze6";
+    public int CurrentMaze { get; set; } = 0;
     public bool HommeIntro = false;
 
 
@@ -14,6 +14,7 @@ public class GameManager : Manager<GameManager>
         InstantiateSystemPrefabs();
         EventsManager.Instance.TimeDone.AddListener(GameOver);
         EventsManager.Instance.MazeChoosen.AddListener(OnMazeChoosen);
+        EventsManager.Instance.MazeCompleted.AddListener(MazeCompleted);
     }
 
     void InstantiateSystemPrefabs()
@@ -48,10 +49,10 @@ public class GameManager : Manager<GameManager>
         SceneManager.LoadScene("Boot");
         ResetBoot();
     }
-    void OnMazeChoosen(string name)
+    void OnMazeChoosen(int name)
     {
-        UIManager.Instance.ToogleMazeUI();
         CurrentMaze = name;
+        UIManager.Instance.ToogleMazeUI();
         SceneManager.LoadScene("Maze");
         Resume();
         SoundManager.Instance.PlayMusic(SoundManager.Instance.Musics[Random.Range(0, SoundManager.Instance.Musics.Count)].name);
@@ -60,5 +61,17 @@ public class GameManager : Manager<GameManager>
     {
         UIManager.Instance.ToogleBootUI();
         SoundManager.Instance.StopMusicAudioSource();
+    }
+    void MazeCompleted(string itemName)
+    {
+        SoundManager.Instance.PlayEffects("Win");
+
+        var starsNumber = UIManager.Instance.GetHeartsNumber;
+        UIManager.Instance.SetupStars();
+
+        ProgressManager.Instance.AddMazeItemToLearn(itemName);
+        ProgressManager.Instance.AddCompletedMaze(CurrentMaze, starsNumber);
+        ProgressManager.Instance.AddCompletedMaze(CurrentMaze + 1, 0);
+        StartCoroutine(ProgressManager.Instance.Wait(3, () => { Instance.Win(); }));
     }
 }

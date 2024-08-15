@@ -11,6 +11,8 @@ public class PlayButtonClick : MonoBehaviour
         GetComponent<Button>().onClick.AddListener(() =>
         {
             UIManager.Instance.ToogleChoicesMenu();
+            UIManager.Instance.InstantiateButtons();
+
         });
     }
 }

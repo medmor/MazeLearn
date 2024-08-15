@@ -1,6 +1,6 @@
 ﻿
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class UIManager : Manager<UIManager>
 {
@@ -20,7 +20,6 @@ public class UIManager : Manager<UIManager>
     {
         mazeUI.SetActive(false);
         introUI.SetActive(true);
-        ChoicesMenu.InstantiateButtons();
         StarsContainer.gameObject.SetActive(false);
         Hearts.ResetHearts();
     }
@@ -64,6 +63,11 @@ public class UIManager : Manager<UIManager>
     public void ResetHearts()
     {
         Hearts.ResetHearts();
+    }
+
+    public void InstantiateButtons()
+    {
+        ChoicesMenu.InstantiateButtons();
     }
 
 }

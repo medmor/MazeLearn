@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -7,16 +8,15 @@ public class ProgressManager : Manager<ProgressManager>
     public readonly string MazeProgressKey = "MazesProgress";
     public readonly string MazeItemsToLearnKey = "MazeItemsToLearn";
 
-    private List<string> MazeProgress = new List<string>();
+    private List<int> MazeProgress = new List<int>();
     private readonly List<string> MazeItemsToLearn = new List<string>();
 
     public void Start()
     {
         if (PlayerPrefs.HasKey(MazeProgressKey))
-            MazeProgress = GetMazeProgress().Split(',').ToList();
+            MazeProgress = GetMazeProgress().Split(',').ToList().Select(x => int.Parse(x)).ToList();
         else
             ResetMazeProgress();
-        MazeProgress = MazeProgress.Distinct().ToList();
     }
 
     public void SetMazeProgress()
@@ -25,19 +25,17 @@ public class ProgressManager : Manager<ProgressManager>
         PlayerPrefs.Save();
     }
 
-    public void AddCompletedMaze(string completedMaze)
+    public void AddCompletedMaze(int index, int stars)
     {
 
-        var index = MazeProgress.FindIndex(c => c.Split(':')[0] == completedMaze.Split(':')[0]);
 
-        if (index != -1)
+        if (index > MazeProgress.Count - 1)
         {
-            if (completedMaze.Split(':')[1] != "0")
-                MazeProgress[index] = completedMaze;
+            MazeProgress.Add(stars);
         }
         else
         {
-            MazeProgress.Add(completedMaze);
+            MazeProgress[index] = stars;
         }
         SetMazeProgress();
     }
@@ -49,20 +47,20 @@ public class ProgressManager : Manager<ProgressManager>
 
     public void ResetMazeProgress()
     {
-        MazeProgress = new List<string>() { "1:0" };
+        MazeProgress = new List<int>() { 0 };
         SetMazeProgress();
     }
 
     public bool LockedMaze(int mazeNumber)
     {
-
-        return mazeNumber > int.Parse(MazeProgress[MazeProgress.Count - 1].Split(':')[0]);
+        print(MazeProgress.Count);
+        return mazeNumber > MazeProgress.Count - 1;
     }
 
-    public int GetMazeStars(string mazeNumber)
+    public int GetMazeStars(int mazeNumber)
     {
-        var maze = MazeProgress.Find(c => c.Split(':')[0] == mazeNumber);
-        return int.Parse(maze.Split(':')[1]);
+        if (mazeNumber > MazeProgress.Count - 1) return 0;
+        return MazeProgress[mazeNumber];
     }
 
     public void AddMazeItemToLearn(string item)
@@ -75,10 +73,13 @@ public class ProgressManager : Manager<ProgressManager>
         return MazeItemsToLearn;
     }
 
-    public void ResetMazeItmsToLearn()
+
+    public IEnumerator Wait(float seconds, LambdaArgument lambda)
     {
-        MazeItemsToLearn.Clear();
+        yield return new WaitForSeconds(seconds);
+        lambda();
     }
+    public delegate void LambdaArgument();
 
 
 }
