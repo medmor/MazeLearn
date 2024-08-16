@@ -7,13 +7,12 @@ public class ChoicesMenu : MonoBehaviour
     public GameObject ButtonPref;
     public GameObject starPref;
 
-    public void Start()
-    {
-        InstantiateButtons();
-    }
-
     public void InstantiateButtons()
     {
+        foreach (Transform child in grid)
+        {
+            Destroy(child.gameObject);
+        }
         for (var i = 0; i < GameManager.Instance.MazeNumber; i++)
         {
             var numb = i;

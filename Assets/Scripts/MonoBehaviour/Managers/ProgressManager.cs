@@ -53,7 +53,6 @@ public class ProgressManager : Manager<ProgressManager>
 
     public bool LockedMaze(int mazeNumber)
     {
-        print(MazeProgress.Count);
         return mazeNumber > MazeProgress.Count - 1;
     }
 
